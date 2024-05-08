@@ -190,7 +190,7 @@ function getDiffRepos(gitRepoPath, event) {
         // console.log('Liste des nouveaux fichiers créés :', createdFiles);
         // console.log('Liste des fichiers supprimés :', deletedFiles);
 
-        event.reply('repos-set-file', { modifiedFiles: modifiedFiles, createdFiles: createdFiles, deletedFiles: deletedFiles });
+        event.reply('repos-set-file', { modifiedFiles: modifiedFiles, createdFiles: createdFiles, deletedFiles: deletedFiles, untrackedFiles:untrackedFiles });
     });
 }
 
@@ -364,7 +364,7 @@ ipcMain.on('get-save-repo', async (event, arg) => {
     getSelectedRepoPromise.then((data) => {
 
         console.log("update repos");
-        
+
         getBranchRepos(data.url, event);
         getDiffRepos(data.url, event);
 

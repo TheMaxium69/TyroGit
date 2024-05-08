@@ -38,44 +38,17 @@
             <div style="left: 14px; top: 54px; position: absolute; color: #2A2F5C; font-size: 12px; font-family: Inter; font-weight: 400; word-wrap: break-word">Description</div>
             <div style="left: 142px; top: 141px; position: absolute; color: white; font-size: 12px; font-family: Poppins; font-weight: 700; word-wrap: break-word">COMMIT</div>
         </div>
-        <div style="width: 345px; height: 370px; left: 5px; top: 293px; position: absolute">
-            <div style="width: 345px; height: 370px; left: 0px; top: 0px; position: absolute; background: #010032; border-radius: 8px"></div>
-            <div style="left: 17px; top: 14px; position: absolute; color: white; font-size: 13px; font-family: Inter; font-weight: 400; word-wrap: break-word">CHANGE</div>
 
+        <div style="width: 345px; height: 370px; left: 5px; top: 293px; position: absolute">
+            <div style="width: 345px; height: 370px; left: 0px; top: 0px; position: absolute; background: #010032; border-radius: 8px; z-index: -1;"></div>
+            <div style="left: 17px; top: 14px; position: absolute; color: white; font-size: 13px; font-family: Inter; font-weight: 400; word-wrap: break-word">CHANGE <span id="nbChange" style="background: rgba(211,211,211,0.45);border-radius: 4px;font-size: 10px;padding: 3px;">0</span></div>
 
             <!--FIRST-->
-            <div style="width: 24px; height: 24px; left: 13px; top: 47px; position: absolute">
-                <i style="width: 14px; height: 14px; left: 5px; top: 5px; position: absolute; color: white" class="ri-checkbox-fill"></i>
-            </div>
-            <div style="left: 44px; top: 52px; position: absolute; color: white; font-size: 12px; font-family: Inter; font-weight: 600; word-wrap: break-word">index.js</div>
-            <div style="width: 24px; height: 24px; left: 306px; top: 47px; position: absolute">
-                <i style="width: 14px; height: 14px; left: 5px; top: 5px; position: absolute; color: #03AC00" class="ri-add-box-line"></i>
-            </div>
+            <article style="height: 45px; z-index: 1;"></article>
 
-            <div style="width: 276px; height: 0px; left: 35px; top: 81px; position: absolute; border: 1px rgba(255, 255, 255, 0.36) solid"></div>
-
-<!--            &lt;!&ndash;SECOND&ndash;&gt;-->
-<!--            <div style="width: 24px; height: 24px; left: 13px; top: 88px; position: absolute">-->
-<!--                <div style="width: 14px; height: 14px; left: 5px; top: 5px; position: absolute; background: white"></div>-->
-<!--            </div>-->
-<!--            <div style="left: 45px; top: 92px; position: absolute; color: white; font-size: 12px; font-family: Inter; font-weight: 600; word-wrap: break-word">style.css</div>-->
-<!--            <div style="width: 24px; height: 24px; left: 306px; top: 88px; position: absolute">-->
-<!--                <div style="width: 14px; height: 14px; left: 5px; top: 5px; position: absolute; background: #ED9005"></div>-->
-<!--            </div>-->
-
-<!--            <div style="width: 276px; height: 0px; left: 36px; top: 122px; position: absolute; border: 1px rgba(255, 255, 255, 0.36) solid"></div>-->
-
-<!--            &lt;!&ndash;TROISIME&ndash;&gt;-->
-<!--            <div style="width: 24px; height: 24px; left: 14px; top: 129px; position: absolute">-->
-<!--                <div style="width: 14px; height: 14px; left: 5px; top: 5px; position: absolute; background: white"></div>-->
-<!--            </div>-->
-<!--            <div style="left: 46px; top: 133px; position: absolute; color: white; font-size: 12px; font-family: Inter; font-weight: 600; word-wrap: break-word">style.css</div>-->
-<!--            <div style="width: 24px; height: 24px; left: 307px; top: 129px; position: absolute">-->
-<!--                <div style="width: 14px; height: 14px; left: 5px; top: 5px; position: absolute; background: #ED9005"></div>-->
-<!--            </div>-->
-
-
-
+            <section id="changeFile">
+                <!--ADD FILE-->
+            </section>
 
 
 
@@ -125,6 +98,8 @@
     /* BALISE INFO */
     let reposNameDiv = document.getElementById("reposName");
     let reposBranchSelectedDiv = document.getElementById("reposBranchSelected");
+    let changeFileSection = document.getElementById("changeFile");
+    let nbChangeSpan = document.getElementById("nbChange");
 
     /* INFO DU REPOS */
     let reposUrl;
@@ -135,6 +110,9 @@
     let modifiedFiles;
     let createdFiles;
     let deletedFiles;
+    let untrackedFiles;
+
+    let nbFile = 0;
 
 
     ipcRenderer.on("repos-set-info", (event, data) => {
@@ -156,10 +134,228 @@
     });
 
     ipcRenderer.on("repos-set-file", (event, data) => {
-
+        if (nbFile === 0){
         modifiedFiles = data.modifiedFiles;
         createdFiles = data.createdFiles;
         deletedFiles = data.deletedFiles;
+        untrackedFiles = data.untrackedFiles;
+
+        if (modifiedFiles.length !== 0){
+
+
+            modifiedFiles.forEach(oneFileEdit => {
+
+                if (nbFile === 0){
+
+                    nbFile = 1;
+                    const newDiv = document.createElement('div');
+                    newDiv.style.width = '100%';
+                    newDiv.innerHTML = `
+    <div style="width: 100%;">
+        <div style="display: flex;flex-wrap: nowrap;justify-content: space-between;padding: 0px 15px;">
+            <div style="width: 24px; height: 24px;">
+                <i style="width: 14px; height: 14px; color: white" class="ri-checkbox-fill"></i>
+            </div>
+            <div style="color: white; font-size: 12px; font-family: Inter; font-weight: 600; word-wrap: break-word; margin-top: 5px">${oneFileEdit}</div>
+            <div style="width: 24px; height: 24px;">
+                <i style="width: 14px; height: 14px; color: #ED9005" class="ri-checkbox-indeterminate-line"></i>
+            </div>
+        </div>
+    </div>
+`;
+                    changeFileSection.appendChild(newDiv);
+
+                } else {
+
+                    nbFile = nbFile + 1;
+
+                    const newDiv = document.createElement('div');
+                    newDiv.style.width = '100%';
+                    newDiv.innerHTML = `
+    <div style="margin:10px auto;width: 276px; height: 0px; border: 1px rgba(255, 255, 255, 0.36) solid"></div>
+    <div style="width: 100%;">
+        <div style="display: flex;flex-wrap: nowrap;justify-content: space-between;padding: 0px 15px;">
+            <div style="width: 24px; height: 24px;">
+                <i style="width: 14px; height: 14px; color: white" class="ri-checkbox-fill"></i>
+            </div>
+            <div style="color: white; font-size: 12px; font-family: Inter; font-weight: 600; word-wrap: break-word; margin-top: 5px">${oneFileEdit}</div>
+            <div style="width: 24px; height: 24px;">
+                <i style="width: 14px; height: 14px; color: #ED9005" class="ri-checkbox-indeterminate-line"></i>
+            </div>
+        </div>
+    </div>
+`;
+                    changeFileSection.appendChild(newDiv);
+
+
+                }
+
+            });
+
+
+        }
+        if (createdFiles.length !== 0){
+
+            createdFiles.forEach(oneFileCreate => {
+
+                if (nbFile === 0){
+
+                    nbFile = 1;
+                    const newDiv = document.createElement('div');
+                    newDiv.style.width = '100%';
+                    newDiv.innerHTML = `
+    <div style="width: 100%;">
+        <div style="display: flex;flex-wrap: nowrap;justify-content: space-between;padding: 0px 15px;">
+            <div style="width: 24px; height: 24px;">
+                <i style="width: 14px; height: 14px; color: white" class="ri-checkbox-fill"></i>
+            </div>
+            <div style="color: white; font-size: 12px; font-family: Inter; font-weight: 600; word-wrap: break-word; margin-top: 5px">${oneFileCreate}</div>
+            <div style="width: 24px; height: 24px;">
+                <i style="width: 14px; height: 14px; color: #03AC00" class="ri-add-box-line"></i>
+            </div>
+        </div>
+    </div>
+`;
+                    changeFileSection.appendChild(newDiv);
+
+                } else {
+
+                    nbFile = nbFile + 1;
+
+                    const newDiv = document.createElement('div');
+                    newDiv.style.width = '100%';
+                    newDiv.innerHTML = `
+    <div style="margin:10px auto;width: 276px; height: 0px; border: 1px rgba(255, 255, 255, 0.36) solid"></div>
+    <div style="width: 100%;">
+        <div style="display: flex;flex-wrap: nowrap;justify-content: space-between;padding: 0px 15px;">
+            <div style="width: 24px; height: 24px;">
+                <i style="width: 14px; height: 14px; color: white" class="ri-checkbox-fill"></i>
+            </div>
+            <div style="color: white; font-size: 12px; font-family: Inter; font-weight: 600; word-wrap: break-word; margin-top: 5px">${oneFileCreate}</div>
+            <div style="width: 24px; height: 24px;">
+                <i style="width: 14px; height: 14px; color: #03AC00" class="ri-add-box-line"></i>
+            </div>
+        </div>
+    </div>
+`;
+                    changeFileSection.appendChild(newDiv);
+
+
+                }
+
+            });
+
+        }
+        if (deletedFiles.length !== 0){
+
+
+            deletedFiles.forEach(oneFileDelete => {
+
+                if (nbFile === 0){
+
+                    nbFile = 1;
+                    const newDiv = document.createElement('div');
+                    newDiv.style.width = '100%';
+                    newDiv.innerHTML = `
+    <div style="width: 100%;">
+        <div style="display: flex;flex-wrap: nowrap;justify-content: space-between;padding: 0px 15px;">
+            <div style="width: 24px; height: 24px;">
+                <i style="width: 14px; height: 14px; color: white" class="ri-checkbox-fill"></i>
+            </div>
+            <div style="color: white; font-size: 12px; font-family: Inter; font-weight: 600; word-wrap: break-word; margin-top: 5px">${oneFileDelete}</div>
+            <div style="width: 24px; height: 24px;">
+                <i style="width: 14px; height: 14px; color: #d20000" class="ri-checkbox-indeterminate-line"></i>
+            </div>
+        </div>
+    </div>
+`;
+                    changeFileSection.appendChild(newDiv);
+
+                } else {
+
+                    nbFile = nbFile + 1;
+
+                    const newDiv = document.createElement('div');
+                    newDiv.style.width = '100%';
+                    newDiv.innerHTML = `
+    <div style="margin:10px auto;width: 276px; height: 0px; border: 1px rgba(255, 255, 255, 0.36) solid"></div>
+    <div style="width: 100%;">
+        <div style="display: flex;flex-wrap: nowrap;justify-content: space-between;padding: 0px 15px;">
+            <div style="width: 24px; height: 24px;">
+                <i style="width: 14px; height: 14px; color: white" class="ri-checkbox-fill"></i>
+            </div>
+            <div style="color: white; font-size: 12px; font-family: Inter; font-weight: 600; word-wrap: break-word; margin-top: 5px">${oneFileDelete}</div>
+            <div style="width: 24px; height: 24px;">
+                <i style="width: 14px; height: 14px; color: #d20000" class="ri-checkbox-indeterminate-line"></i>
+            </div>
+        </div>
+    </div>
+`;
+                    changeFileSection.appendChild(newDiv);
+
+
+                }
+
+            });
+
+        }
+
+        if (untrackedFiles.length !== 0){
+
+            untrackedFiles.forEach(oneFileUntracked => {
+
+                if (nbFile === 0){
+
+                    nbFile = 1;
+                    const newDiv = document.createElement('div');
+                    newDiv.style.width = '100%';
+                    newDiv.innerHTML = `
+    <div style="width: 100%;">
+        <div style="display: flex;flex-wrap: nowrap;justify-content: space-between;padding: 0px 15px;">
+            <div style="width: 24px; height: 24px;">
+                <i style="width: 14px; height: 14px; color: white" class="ri-checkbox-fill"></i>
+            </div>
+            <div style="color: white; font-size: 12px; font-family: Inter; font-weight: 600; word-wrap: break-word; margin-top: 5px">${oneFileUntracked}</div>
+            <div style="width: 24px; height: 24px;">
+                <i style="width: 14px; height: 14px; color: #03AC00" class="ri-add-box-line"></i>
+            </div>
+        </div>
+    </div>
+`;
+                    changeFileSection.appendChild(newDiv);
+
+                } else {
+
+                    nbFile = nbFile + 1;
+
+                    const newDiv = document.createElement('div');
+                    newDiv.style.width = '100%';
+                    newDiv.innerHTML = `
+    <div style="margin:10px auto;width: 276px; height: 0px; border: 1px rgba(255, 255, 255, 0.36) solid"></div>
+    <div style="width: 100%;">
+        <div style="display: flex;flex-wrap: nowrap;justify-content: space-between;padding: 0px 15px;">
+            <div style="width: 24px; height: 24px;">
+                <i style="width: 14px; height: 14px; color: white" class="ri-checkbox-fill"></i>
+            </div>
+            <div style="color: white; font-size: 12px; font-family: Inter; font-weight: 600; word-wrap: break-word; margin-top: 5px">${oneFileUntracked}</div>
+            <div style="width: 24px; height: 24px;">
+                <i style="width: 14px; height: 14px; color: #03AC00" class="ri-add-box-line"></i>
+            </div>
+        </div>
+    </div>
+`;
+                    changeFileSection.appendChild(newDiv);
+
+
+                }
+
+            });
+
+        }
+
+
+        nbChangeSpan.innerText = nbFile;
+        }
 
     });
 
