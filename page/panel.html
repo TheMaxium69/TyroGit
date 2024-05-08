@@ -45,7 +45,7 @@
 
             <!--FIRST-->
             <div style="width: 24px; height: 24px; left: 13px; top: 47px; position: absolute">
-                <div style="width: 14px; height: 14px; left: 5px; top: 5px; position: absolute; background: white"></div>
+                <i style="width: 14px; height: 14px; left: 5px; top: 5px; position: absolute; color: white" class="ri-checkbox-fill"></i>
             </div>
             <div style="left: 44px; top: 52px; position: absolute; color: white; font-size: 12px; font-family: Inter; font-weight: 600; word-wrap: break-word">index.js</div>
             <div style="width: 24px; height: 24px; left: 306px; top: 47px; position: absolute">
@@ -54,25 +54,25 @@
 
             <div style="width: 276px; height: 0px; left: 35px; top: 81px; position: absolute; border: 1px rgba(255, 255, 255, 0.36) solid"></div>
 
-            <!--SECOND-->
-            <div style="width: 24px; height: 24px; left: 13px; top: 88px; position: absolute">
-                <div style="width: 14px; height: 14px; left: 5px; top: 5px; position: absolute; background: white"></div>
-            </div>
-            <div style="left: 45px; top: 92px; position: absolute; color: white; font-size: 12px; font-family: Inter; font-weight: 600; word-wrap: break-word">style.css</div>
-            <div style="width: 24px; height: 24px; left: 306px; top: 88px; position: absolute">
-                <div style="width: 14px; height: 14px; left: 5px; top: 5px; position: absolute; background: #ED9005"></div>
-            </div>
+<!--            &lt;!&ndash;SECOND&ndash;&gt;-->
+<!--            <div style="width: 24px; height: 24px; left: 13px; top: 88px; position: absolute">-->
+<!--                <div style="width: 14px; height: 14px; left: 5px; top: 5px; position: absolute; background: white"></div>-->
+<!--            </div>-->
+<!--            <div style="left: 45px; top: 92px; position: absolute; color: white; font-size: 12px; font-family: Inter; font-weight: 600; word-wrap: break-word">style.css</div>-->
+<!--            <div style="width: 24px; height: 24px; left: 306px; top: 88px; position: absolute">-->
+<!--                <div style="width: 14px; height: 14px; left: 5px; top: 5px; position: absolute; background: #ED9005"></div>-->
+<!--            </div>-->
 
-            <div style="width: 276px; height: 0px; left: 36px; top: 122px; position: absolute; border: 1px rgba(255, 255, 255, 0.36) solid"></div>
+<!--            <div style="width: 276px; height: 0px; left: 36px; top: 122px; position: absolute; border: 1px rgba(255, 255, 255, 0.36) solid"></div>-->
 
-            <!--TROISIME-->
-            <div style="width: 24px; height: 24px; left: 14px; top: 129px; position: absolute">
-                <div style="width: 14px; height: 14px; left: 5px; top: 5px; position: absolute; background: white"></div>
-            </div>
-            <div style="left: 46px; top: 133px; position: absolute; color: white; font-size: 12px; font-family: Inter; font-weight: 600; word-wrap: break-word">style.css</div>
-            <div style="width: 24px; height: 24px; left: 307px; top: 129px; position: absolute">
-                <div style="width: 14px; height: 14px; left: 5px; top: 5px; position: absolute; background: #ED9005"></div>
-            </div>
+<!--            &lt;!&ndash;TROISIME&ndash;&gt;-->
+<!--            <div style="width: 24px; height: 24px; left: 14px; top: 129px; position: absolute">-->
+<!--                <div style="width: 14px; height: 14px; left: 5px; top: 5px; position: absolute; background: white"></div>-->
+<!--            </div>-->
+<!--            <div style="left: 46px; top: 133px; position: absolute; color: white; font-size: 12px; font-family: Inter; font-weight: 600; word-wrap: break-word">style.css</div>-->
+<!--            <div style="width: 24px; height: 24px; left: 307px; top: 129px; position: absolute">-->
+<!--                <div style="width: 14px; height: 14px; left: 5px; top: 5px; position: absolute; background: #ED9005"></div>-->
+<!--            </div>-->
 
 
 
@@ -93,25 +93,91 @@
             <div style="left: 124px; top: 11px; position: absolute; color: white; font-size: 9px; font-family: Poppins; font-weight: 400; word-wrap: break-word">+4</div>
         </div>
         <div style="width: 345px; height: 157px; left: 6px; top: 43px; position: absolute">
+
             <div style="width: 345px; height: 157px; left: 0px; top: 0px; position: absolute; background: #010032; border-radius: 8px"></div>
-            <div style="left: 16px; top: 5px; position: absolute; color: white; font-size: 12px; font-family: Inter; font-weight: 400; word-wrap: break-word">REPOSITORY</div>
-            <div style="left: 43px; top: 28px; position: absolute; color: white; font-size: 17px; font-family: Inter; font-weight: 400; word-wrap: break-word">TyroMod</div>
-            <div style="width: 315.01px; height: 0px; left: 14px; top: 65px; position: absolute; border: 1px white solid"></div>
-            <div style="width: 24px; height: 24px; left: 302px; top: 28px; position: absolute">
-                <i style="font-size: 25px;" class="ri-arrow-down-s-line"></i>
+
+            <!--REPO-->
+            <div onclick="reposChoose()">
+                <div style="left: 16px; top: 5px; position: absolute; color: white; font-size: 12px; font-family: Inter; font-weight: 400; word-wrap: break-word">REPOSITORY</div>
+                <div id="reposName" style="left: 43px; top: 28px; position: absolute; color: white; font-size: 17px; font-family: Inter; font-weight: 400; word-wrap: break-word"></div>
+                <div style="width: 315.01px; height: 0px; left: 14px; top: 65px; position: absolute; border: 1px white solid"></div>
+                <div style="width: 24px; height: 24px; left: 302px; top: 28px; position: absolute">
+                    <i style="font-size: 25px;" class="ri-arrow-down-s-line"></i>
+                </div>
             </div>
-            <div style="left: 18px; top: 83px; position: absolute; color: white; font-size: 12px; font-family: Inter; font-weight: 400; word-wrap: break-word">BRANCH</div>
-            <div style="left: 45px; top: 106px; position: absolute; color: white; font-size: 17px; font-family: Inter; font-weight: 400; word-wrap: break-word">Main</div>
-            <div style="width: 315.01px; height: 0px; left: 16px; top: 143px; position: absolute; border: 1px white solid"></div>
-            <div style="width: 24px; height: 24px; left: 304px; top: 106px; position: absolute">
-                <i style="font-size: 25px;" class="ri-arrow-down-s-line"></i>
+            <!--BRANCH-->
+            <div onclick="branchChoose()">
+                <div style="left: 18px; top: 83px; position: absolute; color: white; font-size: 12px; font-family: Inter; font-weight: 400; word-wrap: break-word">BRANCH</div>
+                <div id="reposBranchSelected" style="left: 45px; top: 106px; position: absolute; color: white; font-size: 17px; font-family: Inter; font-weight: 400; word-wrap: break-word"></div>
+                <div style="width: 315.01px; height: 0px; left: 16px; top: 143px; position: absolute; border: 1px white solid"></div>
+                <div style="width: 24px; height: 24px; left: 304px; top: 106px; position: absolute">
+                    <i style="font-size: 25px;" class="ri-arrow-down-s-line"></i>
+                </div>
             </div>
         </div>
     </div>
 
 <script>
-    const { ipcRenderer } = require("electron");
+    const { app, ipcRenderer } = require("electron");
     const ipc=ipcRenderer;
+    const fs = require("fs");
+
+    /* BALISE INFO */
+    let reposNameDiv = document.getElementById("reposName");
+    let reposBranchSelectedDiv = document.getElementById("reposBranchSelected");
+
+    /* INFO DU REPOS */
+    let reposUrl;
+    let reposName;
+    let reposBranchSelected;
+    let reposBranchAll;
+
+    let modifiedFiles;
+    let createdFiles;
+    let deletedFiles;
+
+
+    ipcRenderer.on("repos-set-info", (event, data) => {
+
+        reposName = data.reposName;
+        reposUrl = data.reposUrl;
+
+        reposNameDiv.innerText = reposName;
+
+    });
+
+    ipcRenderer.on("repos-set-branch", (event, data) => {
+
+        reposBranchSelected = data.reposBranchSelected;
+        reposBranchAll = data.reposBranchAll;
+
+        reposBranchSelectedDiv.innerText = reposBranchSelected;
+
+    });
+
+    ipcRenderer.on("repos-set-file", (event, data) => {
+
+        modifiedFiles = data.modifiedFiles;
+        createdFiles = data.createdFiles;
+        deletedFiles = data.deletedFiles;
+
+    });
+
+
+    getFileRepo();
+    function getFileRepo(){
+        ipc.send("get-save-repo");
+    }
+
+
+    function reposChoose(){
+        ipc.send("reposChoose");
+    }
+
+    function branchChoose(){
+        ipc.send("branchChoose");
+    }
+
 </script>
 
 <script src="../module/izitoast.js"></script>
