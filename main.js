@@ -206,6 +206,7 @@ function getLocalCommitCount(repoUrl, branch, callback) {
             return;
         }
         const localCommitCount = log.total;
+        console.log("localCommitCount : ", localCommitCount);
         callback(null, localCommitCount);
     });
 }
@@ -213,18 +214,18 @@ function getLocalCommitCount(repoUrl, branch, callback) {
 // Fonction pour obtenir le nombre de commits du dépôt distant sur une branche spécifique
 function getRemoteCommitCount(repoUrl, branch, callback) {
     const git = simpleGit(repoUrl);
-    git.listRemote(['--heads'], (err, remote) => {
+    git.raw(['ls-remote', '--heads', 'origin', branch], (err, remote) => {
         if (err) {
             console.error('Erreur lors de la récupération des commits distants :', err);
             callback(err);
             return;
         }
         // Comptez le nombre de références de branche distante correspondant à la branche spécifiée
-        const remoteCommitCount = remote.split('\n').filter(branch => branch.endsWith(`refs/heads/${branch}`)).length;
+        const remoteCommitCount = remote.split('\n').filter(ref => ref !== '').length;
+        console.log("remoteCommitCount : ", remoteCommitCount);
         callback(null, remoteCommitCount);
     });
 }
-
 // Fonction pour comparer les nombres de commits locaux et distants sur une branche spécifique
 function compareCommitCounts(repoUrl, branch, event) {
     getLocalCommitCount(repoUrl, branch, (err, localCount) => {
