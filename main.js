@@ -229,14 +229,14 @@ ipcMain.on('git-pull', async (event, data) => {
     git.pull((err, update) => {
         if (err) {
             console.error('Erreur lors du pull :', err);
+            getSaveRepo(event);
             event.reply('notif', { type: 'err', message: 'Erreur lors du pull.' });
-            event.reply("get-save-repo");
             return;
         }
 
         console.log('Pull effectué avec succès !');
+        getSaveRepo(event);
         event.reply('notif', { type: 'true', message: 'Pull effectué avec succès !' });
-        event.reply("get-save-repo");
 
         // Si des mises à jour ont été récupérées
         // if (update && update.summary.changes) {
@@ -256,15 +256,15 @@ ipcMain.on('git-push', async (event, data) => {
     git.push('origin', data.branch, (err, result) => {
         if (err) {
             console.error('Erreur lors du push :', err);
+            getSaveRepo(event);
             event.reply('notif', { type: 'err', message: 'Erreur lors du push.' });
-            event.reply("get-save-repo");
             return;
         }
 
         console.log('Push effectué avec succès !');
         console.log('Résultat du push :', result);
+        getSaveRepo(event);
         event.reply('notif', { type: 'true', message: 'Push effectué avec succès !' });
-        event.reply("get-save-repo");
     });
 
 });
@@ -279,13 +279,13 @@ ipcMain.on('git-commit', async (event, data) => {
         .commit(data.title + '\n\n' + data.desc)
         .then(() => {
             console.log('Commit effectué avec succès !');
+            getSaveRepo(event);
             event.reply('notif', { type: 'true', message: 'Commit effectué avec succès !' });
-            event.reply("get-save-repo");
         })
         .catch(err => {
             console.error('Erreur lors du commit :', err);
+            getSaveRepo(event);
             event.reply('notif', { type: 'err', message: 'Erreur lors du commit' });
-            event.reply("get-save-repo");
         });
 
 });
@@ -445,6 +445,12 @@ function setFileActuel(name, url){
 
 ipcMain.on('get-save-repo', async (event, arg) => {
 
+    getSaveRepo(event)
+
+
+});
+
+function getSaveRepo(event){
     let selectedRepo = urlInstanceTyroGit + "Selected_Repo.json";
 
     const getSelectedRepoPromise = new Promise((resolve, reject) => {
@@ -466,8 +472,5 @@ ipcMain.on('get-save-repo', async (event, arg) => {
 
         event.reply('repos-set-info', { reposName: data.name, url: data.url });
 
-
-
     });
-
-});
+}
