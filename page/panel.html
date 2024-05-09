@@ -71,7 +71,7 @@
 
             <div onclick="gitPush()" id="countCommitDiv" style="display: none">
                 <div style="width: 27px; height: 14px; left: 282px; top: 11px; position: absolute; background: #3834FF; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border-radius: 3px"></div>
-                <div id="countCommitChiffre" style="left: 289px; top: 11px; position: absolute; color: white; font-size: 9px; font-family: Poppins; font-weight: 400; word-wrap: break-word">+4</div>
+                <div id="countCommitChiffre" style="left: 289px; top: 11px; position: absolute; color: white; font-size: 9px; font-family: Poppins; font-weight: 400; word-wrap: break-word">+ 0</div>
             </div>
 <!--            <div style="width: 27px; height: 14px; left: 117px; top: 11px; position: absolute; background: #3834FF; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border-radius: 3px"></div>-->
 <!--            <div style="left: 124px; top: 11px; position: absolute; color: white; font-size: 9px; font-family: Poppins; font-weight: 400; word-wrap: break-word">+4</div>-->
@@ -112,6 +112,8 @@
     let reposBranchSelectedDiv = document.getElementById("reposBranchSelected");
     let changeFileSection = document.getElementById("changeFile");
     let nbChangeSpan = document.getElementById("nbChange");
+    let countCommitDiv = document.getElementById("countCommitDiv");
+    let countCommitChiffre = document.getElementById("countCommitChiffre");
 
     /* INFO DU REPOS */
     let reposUrl;
@@ -265,6 +267,7 @@
     ipcRenderer.on("repos-set-commit", (event, data) => {
 
         nbCommitNotPush = data.nbCommitNotPush;
+        console.log(nbCommitNotPush)
 
         setCommit(nbCommitNotPush);
 
@@ -272,23 +275,15 @@
 
     function setCommit(countCommit){
 
-
         if (countCommit === 0){
 
-
-
+            countCommitChiffre.style.display = "none";
+            countCommitDiv.style.display = "none";
         } else {
-
-
-
-
+            countCommitChiffre.style.display = "block";
+            countCommitDiv.style.display = "block";
+            countCommitChiffre.innerText = "+ " + countCommit;
         }
-
-
-
-
-
-
     }
 
 

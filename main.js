@@ -216,7 +216,7 @@ function compareCommitCounts(repoUrl, branch, event) {
             return;
         }
         console.log(`Il y a ${count} commits non poussés.`);
-        event.send('repos-set-commit', { nbCommitNotPush:count });
+        event.reply('repos-set-commit', { nbCommitNotPush:count });
     });
 }
 
@@ -230,11 +230,13 @@ ipcMain.on('git-pull', async (event, data) => {
         if (err) {
             console.error('Erreur lors du pull :', err);
             event.reply('notif', { type: 'err', message: 'Erreur lors du pull.' });
+            event.reply("get-save-repo");
             return;
         }
 
         console.log('Pull effectué avec succès !');
         event.reply('notif', { type: 'true', message: 'Pull effectué avec succès !' });
+        event.reply("get-save-repo");
 
         // Si des mises à jour ont été récupérées
         // if (update && update.summary.changes) {
@@ -255,12 +257,14 @@ ipcMain.on('git-push', async (event, data) => {
         if (err) {
             console.error('Erreur lors du push :', err);
             event.reply('notif', { type: 'err', message: 'Erreur lors du push.' });
+            event.reply("get-save-repo");
             return;
         }
 
         console.log('Push effectué avec succès !');
         console.log('Résultat du push :', result);
         event.reply('notif', { type: 'true', message: 'Push effectué avec succès !' });
+        event.reply("get-save-repo");
     });
 
 });
@@ -276,10 +280,12 @@ ipcMain.on('git-commit', async (event, data) => {
         .then(() => {
             console.log('Commit effectué avec succès !');
             event.reply('notif', { type: 'true', message: 'Commit effectué avec succès !' });
+            event.reply("get-save-repo");
         })
         .catch(err => {
             console.error('Erreur lors du commit :', err);
             event.reply('notif', { type: 'err', message: 'Erreur lors du commit' });
+            event.reply("get-save-repo");
         });
 
 });
