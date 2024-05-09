@@ -309,10 +309,10 @@
             return;
         }
 
-
+        let NewDiv
         if (type === "rename"){
 
-            let NewDiv = `
+            NewDiv = `
     ${bar}
     <div style="width: 100%;">
         <div style="display: flex;flex-wrap: nowrap;justify-content: space-between;padding: 0px 15px;">
@@ -327,12 +327,9 @@
     </div>
 `;
 
-
-
-
         } else {
 
-        let NewDiv = `
+            NewDiv = `
     ${bar}
     <div style="width: 100%;">
         <div style="display: flex;flex-wrap: nowrap;justify-content: space-between;padding: 0px 15px;">
@@ -347,6 +344,7 @@
     </div>
 `;
         }
+
     return NewDiv;
 
 
