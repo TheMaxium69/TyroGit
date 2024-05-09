@@ -69,14 +69,10 @@
             <div style="width: 52px; height: 0px; left: 161px; top: 12px; position: absolute; transform: rotate(90deg); transform-origin: 0 0; border: 1px #808080 solid"></div>
             <div onclick="gitPush()" style="left: 215px; top: 28px; position: absolute; color: white; font-size: 17px; font-family: Inter; font-weight: 400; word-wrap: break-word">PUSH</div>
 
-
-
-
-
-
-
-<!--            <div style="width: 27px; height: 14px; left: 282px; top: 11px; position: absolute; background: #3834FF; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border-radius: 3px"></div>-->
-<!--            <div style="left: 289px; top: 11px; position: absolute; color: white; font-size: 9px; font-family: Poppins; font-weight: 400; word-wrap: break-word">+4</div>-->
+            <div onclick="gitPush()" id="countCommitDiv" style="display: none">
+                <div style="width: 27px; height: 14px; left: 282px; top: 11px; position: absolute; background: #3834FF; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border-radius: 3px"></div>
+                <div id="countCommitChiffre" style="left: 289px; top: 11px; position: absolute; color: white; font-size: 9px; font-family: Poppins; font-weight: 400; word-wrap: break-word">+4</div>
+            </div>
 <!--            <div style="width: 27px; height: 14px; left: 117px; top: 11px; position: absolute; background: #3834FF; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border-radius: 3px"></div>-->
 <!--            <div style="left: 124px; top: 11px; position: absolute; color: white; font-size: 9px; font-family: Poppins; font-weight: 400; word-wrap: break-word">+4</div>-->
         </div>
@@ -130,6 +126,7 @@
     let renameFiles;
 
     let nbFile = 0;
+    let nbCommitNotPush = 0;
     let ignoredFileObject = {};
 
 
@@ -264,6 +261,35 @@
         }
 
     });
+
+    ipcRenderer.on("repos-set-commit", (event, data) => {
+
+        nbCommitNotPush = data.nbCommitNotPush;
+
+        setCommit(nbCommitNotPush);
+
+    });
+
+    function setCommit(countCommit){
+
+
+        if (countCommit === 0){
+
+
+
+        } else {
+
+
+
+
+        }
+
+
+
+
+
+
+    }
 
 
     getFileRepo();

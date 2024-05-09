@@ -195,47 +195,28 @@ function getDiffRepos(gitRepoPath, event) {
         event.reply('repos-set-file', { modifiedFiles: modifiedFiles, createdFiles: createdFiles, deletedFiles: deletedFiles, untrackedFiles:untrackedFiles, renameFiles:renameFiles});
     });
 }
-
-// Fonction pour obtenir le nombre de commits locaux sur une branche spécifique
-function getLocalCommitCount(repoUrl, branch, callback) {
-    const git = simpleGit(repoUrl);
-    git.log({ from: branch }, (err, log) => {
+function getUnpushedCommitCount(reposUrl, callback) {
+    const git = simpleGit(reposUrl);
+    git.status((err, status) => {
         if (err) {
-            console.error('Erreur lors de la récupération des commits locaux :', err);
+            console.error('Erreur lors de la récupération de l\'état du dépôt :', err);
             callback(err);
             return;
         }
-        const localCommitCount = log.total;
-        console.log("localCommitCount : ", localCommitCount);
-        callback(null, localCommitCount);
+        // Analyser la sortie de git status pour obtenir le nombre de commits non poussés
+        const unpushedCommitCount = status.ahead;
+        callback(null, unpushedCommitCount);
     });
 }
 
-// Fonction pour obtenir le nombre de commits du dépôt distant sur une branche spécifique
-function getRemoteCommitCount(repoUrl, branch, callback) {
-    const git = simpleGit(repoUrl);
-    git.raw(['ls-remote', '--heads', 'origin', branch], (err, remote) => {
-        if (err) {
-            console.error('Erreur lors de la récupération des commits distants :', err);
-            callback(err);
-            return;
-        }
-        // Comptez le nombre de références de branche distante correspondant à la branche spécifiée
-        const remoteCommitCount = remote.split('\n').filter(ref => ref !== '').length;
-        console.log("remoteCommitCount : ", remoteCommitCount);
-        callback(null, remoteCommitCount);
-    });
-}
-// Fonction pour comparer les nombres de commits locaux et distants sur une branche spécifique
 function compareCommitCounts(repoUrl, branch, event) {
-    getLocalCommitCount(repoUrl, branch, (err, localCount) => {
-        if (err) return;
-        getRemoteCommitCount(repoUrl, branch, (err, remoteCount) => {
-            if (err) return;
-            const commitsToPush = localCount - remoteCount;
-            console.log(`Il reste ${commitsToPush} commits à pousser sur la branche ${branch}.`);
-            // event.reply('repos-set-commit', { reposName: data.name, url: data.url });
-        });
+    getUnpushedCommitCount(repoUrl, (err, count) => {
+        if (err) {
+            // Gérer les erreurs
+            return;
+        }
+        console.log(`Il y a ${count} commits non poussés.`);
+        event.send('repos-set-commit', { nbCommitNotPush:count });
     });
 }
 
