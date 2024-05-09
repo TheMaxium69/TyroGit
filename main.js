@@ -16,6 +16,7 @@ function createWindow () {
         width: 361,
         height: 854,
         resizable: false,
+        // transparent: true,
         icon: path.join(__dirname, "/assets/logo.png"),
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
@@ -173,26 +174,90 @@ function getDiffRepos(gitRepoPath, event) {
             return;
         }
 
-        // Obtenez la liste des fichiers modifiés mais non encore ajoutés pour le commit
         const untrackedFiles = status.not_added;
 
-        // Obtenez la liste des fichiers modifiés
+        const renameFiles = status.renamed;
+
         const modifiedFiles = status.modified;
 
-        // Obtenez la liste des nouveaux fichiers créés
         const createdFiles = status.created;
 
         const deletedFiles = status.deleted;
 
         // Affichez les listes de fichiers
-        // console.log('Liste des fichiers modifiés mais non encore ajoutés pour le commit :', untrackedFiles);
-        // console.log('Liste des fichiers modifiés :', modifiedFiles);
-        // console.log('Liste des nouveaux fichiers créés :', createdFiles);
-        // console.log('Liste des fichiers supprimés :', deletedFiles);
+        console.log('Liste des fichiers modifiés mais non encore ajoutés pour le commit :', untrackedFiles);
+        console.log('Liste des fichiers modifiés :', modifiedFiles);
+        console.log('Liste des nouveaux fichiers créés :', createdFiles);
+        console.log('Liste des fichiers supprimés :', deletedFiles);
+        console.log('Liste des fichiers rename :', renameFiles);
 
-        event.reply('repos-set-file', { modifiedFiles: modifiedFiles, createdFiles: createdFiles, deletedFiles: deletedFiles, untrackedFiles:untrackedFiles });
+        event.reply('repos-set-file', { modifiedFiles: modifiedFiles, createdFiles: createdFiles, deletedFiles: deletedFiles, untrackedFiles:untrackedFiles, renameFiles:renameFiles});
     });
 }
+
+ipcMain.on('git-pull', async (event, data) => {
+
+    const git = simpleGit({
+        baseDir: data.url
+    });
+
+    git.pull((err, update) => {
+        if (err) {
+            console.error('Erreur lors du pull :', err);
+            event.reply('notif', { type: 'err', message: 'Erreur lors du pull.' });
+            return;
+        }
+
+        console.log('Pull effectué avec succès !');
+        event.reply('notif', { type: 'true', message: 'Pull effectué avec succès !' });
+
+        // Si des mises à jour ont été récupérées
+        // if (update && update.summary.changes) {
+        //     console.log('Mises à jour récupérées :', update.summary.changes);
+        //     event.reply('notif', { type: 'info', message: 'Nouveau fichier recupérée.' });
+        // }
+
+    });
+
+});
+ipcMain.on('git-push', async (event, data) => {
+
+    const git = simpleGit({
+        baseDir: data.url
+    });
+
+    git.push('origin', data.branch, (err, result) => {
+        if (err) {
+            console.error('Erreur lors du push :', err);
+            event.reply('notif', { type: 'err', message: 'Erreur lors du push.' });
+            return;
+        }
+
+        console.log('Push effectué avec succès !');
+        console.log('Résultat du push :', result);
+        event.reply('notif', { type: 'true', message: 'Push effectué avec succès !' });
+    });
+
+});
+
+ipcMain.on('git-commit', async (event, data) => {
+
+    const git = simpleGit({
+        baseDir: data.url
+    });
+
+    git.add('.')
+        .commit(data.title + '\n\n' + data.desc)
+        .then(() => {
+            console.log('Commit effectué avec succès !');
+            event.reply('notif', { type: 'true', message: 'Commit effectué avec succès !' });
+        })
+        .catch(err => {
+            console.error('Erreur lors du commit :', err);
+            event.reply('notif', { type: 'err', message: 'Erreur lors du commit' });
+        });
+
+});
 
 
 /**********
