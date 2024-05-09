@@ -384,7 +384,7 @@
         ipcRenderer.send('git-pull', {url: reposUrl})
     }
     function gitPush(){
-        ipcRenderer.send('git-pull', {url: reposUrl, branch:reposBranchSelected})
+        ipcRenderer.send('git-push', {url: reposUrl, branch:reposBranchSelected})
     }
     function gitCommit(){
         console.log("commit");
