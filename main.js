@@ -12,7 +12,7 @@ const urlInstanceTyroGit = app.getPath("appData") + "/.Tyrolium/TyroGit/";
 function createWindow () {
     mainWindow = new BrowserWindow({
         frame: false,
-        title: "TyroGit - 0.1.0",
+        title: "TyroGit - 0.1.1",
         width: 361,
         height: 854,
         resizable: false,

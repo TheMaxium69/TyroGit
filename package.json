@@ -1,6 +1,6 @@
 {
   "name": "tyrogit-client",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "TyroGit",
   "main": "main.js",
   "scripts": {
