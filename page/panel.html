@@ -166,6 +166,8 @@
     ipcRenderer.on("repos-set-file", (event, data) => {
 
         changeFileSection.innerHTML = "";
+        nbFile = 0;
+        nbChangeSpan.innerText = nbFile;
 
             modifiedFiles = data.modifiedFiles;
             createdFiles = data.createdFiles;
@@ -274,7 +276,7 @@
 
 
         nbChangeSpan.innerText = nbFile;
-        
+
 
     });
 
