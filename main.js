@@ -86,6 +86,9 @@ ipcMain.on("panelChoose", () => {
 ipcMain.on("branchChoose", () => {
     mainWindow.loadFile('page/branch.html');
 });
+ipcMain.on("settingsChoose", () => {
+    mainWindow.loadFile('page/settings.html');
+});
 
 
 

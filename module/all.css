@@ -42,6 +42,11 @@ nav {
     margin: 4px;
     border-radius: 6px;
 }
+
+nav #settings,
+nav #back{
+    font-size: 15px;
+}
 #title {
     user-select: none;
     font-size: 15px;
