@@ -12,12 +12,12 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #050270;
+    background: #ffffff17;
     border-radius: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #020079;
+    background: rgba(171, 171, 171, 0.09);
 }
 .container-text { /* Largeur de la div */
     font-size: 10px;

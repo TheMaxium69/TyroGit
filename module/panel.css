@@ -12,17 +12,17 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #050270;
+    background: #ffffff17;
     border-radius: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #020079;
+    background: rgba(171, 171, 171, 0.09);
 }
 
 
 input[type="text"]::placeholder {
-    color: #2A2F5C;
+    color: #ffffff24;
 }
 
 .custom-textarea {
@@ -32,7 +32,7 @@ input[type="text"]::placeholder {
 .custom-textarea textarea {
     width: 312px;
     height: 60px;
-    background: #010032;
+    background: #00000059;
     border: none;
     border-radius: 8px;
     padding: 10px 14px;
@@ -45,7 +45,7 @@ input[type="text"]::placeholder {
 }
 
 textarea::placeholder {
-    color: #2A2F5C;
+    color: #ffffff24;
 }
 
 input:focus,

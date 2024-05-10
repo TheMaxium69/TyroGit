@@ -34,6 +34,12 @@ function createWindow () {
     }
     mainWindow.setMenuBarVisibility(false);
 
+    mainWindow.webContents.on('did-finish-load', () => {
+        mainWindow.webContents.insertCSS(`:root {
+            --main-color: #02004D;
+        }`);
+    });
+
     initFile();
 
 }
@@ -404,9 +410,35 @@ function initFile(){
             if (err)
                 throw err;
             console.log('Fichier Settings.json cree !');
+
+            mainWindow.webContents.on('did-finish-load', () => {
+                mainWindow.webContents.insertCSS(`:root { --main-color: #02004d; }`);
+            });
+
         });
     } else {
         console.log('Le fichier Settings.json existe deja.');
+
+        const getSettingsPromise = new Promise((resolve, reject) => {
+            fs.readFile(settingsFile, 'utf8', (err, data) => {
+                if (err) {
+                    reject(new Error("ERREUR AVEC LE FICHIER"))
+                    return;
+                }
+                resolve(JSON.parse(data));
+            });
+        });
+
+        getSettingsPromise.then((data) => {
+
+            mainWindow.webContents.on('did-finish-load', () => {
+                mainWindow.webContents.insertCSS(`:root { --main-color: ${data.color}; }`);
+            });
+
+        });
+
+
+
     }
 
 
@@ -631,5 +663,94 @@ ipcMain.on('get-branch-page', async (event, data) => {
 
     });
 
+
+});
+
+
+/**********
+ * SETTINGS
+ **********/
+
+
+ipcMain.on('get-settings-file', async (event, data) => {
+
+    let settingsFile = urlInstanceTyroGit + "Settings.json";
+
+    const getSettingsPromise = new Promise((resolve, reject) => {
+        fs.readFile(settingsFile, 'utf8', (err, data) => {
+            if (err) {
+                reject(new Error("ERREUR AVEC LE FICHIER"))
+                return;
+            }
+            resolve(JSON.parse(data));
+        });
+    });
+
+    getSettingsPromise.then((data) => {
+
+        event.reply('get-variable-settings', { color: data.color, isIcone: data.isIcone });
+
+    });
+
+});
+
+
+ipcMain.on('set-new-color', async (event, data) => {
+
+    let settingsFile = urlInstanceTyroGit + "Settings.json";
+    let newColor = data.color;
+
+    const getSettingsPromise = new Promise((resolve, reject) => {
+        fs.readFile(settingsFile, 'utf8', (err, data) => {
+            if (err) {
+                reject(new Error("ERREUR AVEC LE FICHIER"))
+                return;
+            }
+            resolve(JSON.parse(data));
+        });
+    });
+
+    getSettingsPromise.then((oldData) => {
+
+        oldData.color = newColor
+
+        fs.writeFile(settingsFile, JSON.stringify(oldData), function (err) {
+            if (err)
+                throw err;
+            console.log('Fichier Settings.json update !');
+            event.reply('notif', { type: 'true', message: 'Paramètre mise à jour !' });
+        });
+
+    });
+
+});
+
+ipcMain.on('set-new-icon', async (event, data) => {
+
+    let settingsFile = urlInstanceTyroGit + "Settings.json";
+    let newIsIcone = data.isIcone;
+
+    const getSettingsPromise = new Promise((resolve, reject) => {
+        fs.readFile(settingsFile, 'utf8', (err, data) => {
+            if (err) {
+                reject(new Error("ERREUR AVEC LE FICHIER"))
+                return;
+            }
+            resolve(JSON.parse(data));
+        });
+    });
+
+    getSettingsPromise.then((oldData) => {
+
+        oldData.isIcone = newIsIcone
+
+        fs.writeFile(settingsFile, JSON.stringify(oldData), function (err) {
+            if (err)
+                throw err;
+            console.log('Fichier Settings.json update !');
+            event.reply('notif', { type: 'true', message: 'Paramètre mise à jour !' });
+        });
+
+    });
 
 });
