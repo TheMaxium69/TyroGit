@@ -26,8 +26,12 @@ function createWindow () {
         }
     })
 
-    mainWindow.loadFile('page/start.html')
-    // mainWindow.loadFile('page/panel.html')
+    let selectedRepo = urlInstanceTyroGit + "Selected_Repo.json";
+    if (fs.existsSync(selectedRepo)) {
+        mainWindow.loadFile('page/panel.html')
+    } else {
+        mainWindow.loadFile('page/start.html')
+    }
     mainWindow.setMenuBarVisibility(false);
 
     initFile();
@@ -163,9 +167,16 @@ function getNameRepos(gitRepoPath, event){
         }
 
         const repoUrl = remote.trim();
-        const repoName = repoUrl.split('/').pop().replace('.git', '');
+        let repoName = repoUrl.split('/').pop().replace('.git', '');
+
+        if (repoName === "") {
+            // Si repoName est une chaîne vide, cela signifie que repoUrl se termine par un "/"
+            // Dans ce cas, essayez de supprimer le dernier "/"
+            repoName = repoUrl.slice(0, -1).split('/').pop().replace('.git', '');
+        }
 
         console.log("Nom du repos", repoName)
+        console.log("repoUrl ", repoUrl)
         event.reply('repos-set-info', { reposName: repoName, reposUrl: gitRepoPath });
 
         setFileActuel(repoName, gitRepoPath);

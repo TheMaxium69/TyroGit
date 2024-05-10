@@ -144,8 +144,17 @@
     let nbCommitNotPush = 0;
     let ignoredFileObject = {};
 
+    let isAdd = "false";
+
+    setTimeout(function() {
+        if (isAdd === "false"){
+            getFileRepo();
+        }
+    }, 300);
 
     ipcRenderer.on("repos-set-info", (event, data) => {
+
+        isAdd = "true";
 
         reposName = data.reposName;
         reposUrl = data.reposUrl;
@@ -303,7 +312,6 @@
     }
 
 
-    getFileRepo();
     function getFileRepo(){
         ipc.send("get-save-repo");
     }
