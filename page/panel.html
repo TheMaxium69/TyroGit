@@ -430,6 +430,8 @@
         if (title.trim() === ""){
             notif("err", "Vous devez donner un nom à votre commit");
         } else {
+            titleCommit.value = "";
+            descriptionCommit.value = "";
             ipcRenderer.send('git-commit', {url: reposUrl, title:title, desc:desc, ignoredFileObject:ignoredFileObject})
         }
 
