@@ -348,7 +348,7 @@ ipcMain.on('git-checkout', async (event, data) => {
 
         console.log('Checkout effectué avec succès !');
         mainWindow.loadFile('page/panel.html');
-        
+
     });
 
 });

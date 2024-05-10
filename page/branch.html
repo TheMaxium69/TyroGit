@@ -58,11 +58,11 @@
 
 </div>
 
-<div style="width: 336px; height: 40px; left: 11px; top: 800px; position: absolute">
+<!--<div style="width: 336px; height: 40px; left: 11px; top: 800px; position: absolute">
     <div style="width: 336px; height: 40px; left: 0px; top: 0px; position: absolute; background: #05027E; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border-radius: 8px"></div>
     <div style="left: 127px; top: 11px; position: absolute; color: white; font-size: 12px; font-family: Poppins; font-weight: 700; word-wrap: break-word">ADD BRANCH</div>
     <input type="file" id="dirs" style="opacity: 0;width: 336px; height: 40px; left: 0px; top: 0px; position: absolute; background: #05027E; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border-radius: 8px"></div>
-</div>
+</div>-->
 
 </div>
 
@@ -95,7 +95,7 @@
                 if (oneBranch === branchCurrent){
                     const newDiv = document.createElement('div');
                     newDiv.style.width = '100%';
-                    nbRepoSave = 1;
+                    nbBranch = 1;
                     newDiv.innerHTML = newBranch('true',oneBranch);
                     branchAllDiv.appendChild(newDiv);
                 }
@@ -104,7 +104,7 @@
                 if (oneBranch !== branchCurrent){
                     const newDiv = document.createElement('div');
                     newDiv.style.width = '100%';
-                    nbRepoSave = nbRepoSave + 1;
+                    nbBranch = nbBranch + 1;
                     newDiv.innerHTML = newBranch('false',oneBranch);
                     branchAllDiv.appendChild(newDiv);
                 }
@@ -171,15 +171,6 @@
         ipc.send("git-checkout", { branch:branch, url:reposUrl })
     }
 
-
-
-    /* ADD REPO */
-    document.getElementById('dirs').addEventListener('click', (evt) => {
-        evt.preventDefault()
-        window.postMessage({
-            type: 'select-dirs',
-        })
-    })
 
     /* NOTIF */
     ipcRenderer.on("notif", (event, info) => {
