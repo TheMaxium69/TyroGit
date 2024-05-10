@@ -19,3 +19,38 @@
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #020079;
 }
+
+
+input[type="text"]::placeholder {
+    color: #2A2F5C;
+}
+
+.custom-textarea {
+    position: absolute;left: 0px; top: 43px;
+}
+
+.custom-textarea textarea {
+    width: 312px;
+    height: 60px;
+    background: #010032;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: white;
+    font-size: 12px;
+    font-family: Inter;
+    font-weight: 400;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) inset;
+    resize: none; /* Pour empêcher le redimensionnement */
+}
+
+textarea::placeholder {
+    color: #2A2F5C;
+}
+
+input:focus,
+textarea:focus,
+input:active,
+textarea:active {
+    outline: none;
+}
