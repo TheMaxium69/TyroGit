@@ -1,0 +1,17 @@
+@import url(https://fonts.googleapis.com/css?family=Poppins:300);
+@import url(https://fonts.googleapis.com/css?family=Poppins:200);
+@import url(https://fonts.googleapis.com/css?family=Poppins:500);
+@import url(https://fonts.googleapis.com/css?family=Poppins:700);
+
+body {
+
+    font-family: "Roboto", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    background-color: #02004d;
+    color: white;
+    padding: 0;
+    margin: 0;
+
+}

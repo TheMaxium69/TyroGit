@@ -1,23 +1,53 @@
 {
-  "name": "tyrogit-client",
+  "name": "tyrogit-loader",
+  "productName": "TyroGit",
   "version": "0.1.0",
-  "description": "TyroGit",
+  "description": "Loader TyroGit",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder"
+    "build": "electron-builder",
+    "build-linux": "electron-builder --linux"
   },
-  "icon": "assets/logo.png",
-  "author": "Maxime Tournier",
+  "build": {
+    "appId": "tyrogit-client",
+
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "logo.ico"
+    },
+    "nsis": {
+      "oneClick": true,
+      "installerIcon": "logo.ico",
+      "uninstallerIcon": "logo.ico",
+      "uninstallDisplayName": "TyroGit",
+      "license": "license.md",
+      "allowToChangeInstallationDirectory": false
+    },
+
+    "linux": {
+      "target": [
+        "deb",
+        "snap",
+        "rpm"
+      ],
+      "category": "Utility"
+    }
+  },
+  "icon": "logo.ico",
+  "author": "Tyrolium",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^21.2.3",
+    "electron": "^10.1.5",
     "electron-builder": "^22.14.13"
   },
   "dependencies": {
-    "axios": "^0.21.0",
-    "discord-rpc": "^4.0.1",
-    "izitoast": "^1.4.0",
-    "simple-git": "^3.24.0"
+    "adm-zip": "^0.5.12",
+    "axios": "^1.6.8",
+    "bootstrap": "^5.3.3",
+    "node-fetch": "^3.3.2",
+    "request": "^2.88.2"
   }
 }
