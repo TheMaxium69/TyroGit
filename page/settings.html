@@ -57,12 +57,27 @@
     top: 13px;position: absolute; color: white; font-size: 18px; font-family: Poppins; font-weight: 700; word-wrap: break-word">SETTINGS</div>
         <div onclick="commeBackPage()" style="left: 19px;
     top: 13px;position: absolute; color: white; font-size: 18px; font-family: Poppins; font-weight: 700; word-wrap: break-word"><i class="ri-arrow-left-line"></i></div>
+
+        <div style="height: 30px"></div>
+        <section style="padding: 10px 20px" class="custom-scrollbar">
+
+            <div>
+                <p>Changer la couleur</p>
+                <input id="colorInput" type="color" value="#02004d"><br>
+                <button onclick="changeColor('new')">Enregistez</button>
+                <button onclick="changeColor('reset')">Reset</button>
+            </div><br>
+            <hr>
+            <div>
+                <p>Activer les icone personnaliser</p>
+                <input id="iconeTrueInput" type="checkbox" value="true">Oui<br>
+                <input id="iconeFalseInput" type="checkbox" value="false">Non<br>
+                <button onclick="changeIcone()">Enregistez</button>
+
+            </div>
+
+        </section>
     </div>
-
-
-
-
-
 
     <!-- INFO FINAL -->
     <div style="    width: 319px;
@@ -98,6 +113,39 @@
 <script>
     const { ipcRenderer, shell } = require("electron");
     const ipc=ipcRenderer;
+
+    let colorInput = document.getElementById("colorInput");
+    let iconeTrueInput = document.getElementById("iconeTrueInput");
+    let iconeFalseInput = document.getElementById("iconeFalseInput");
+
+    let colorDefault = '#02004d';
+
+    let colorActuel;
+    let isIcone;
+
+
+
+    /* RECUPER LES PARAMETTRE ACTUEL*/
+
+
+    /* CHANGE SETTINGS */
+    function changeColor(type){
+
+        if (type === 'reset'){
+            let newColor = colorDefault;
+            colorInput.value = colorDefault;
+            console.log('Reset Color is : ', newColor);
+        } else {
+            let newColor = colorInput.value
+            console.log('New Color is : ', newColor);
+        }
+
+    }
+
+    function changeIcone(){
+
+    }
+
 
     // LANCEMENT DE SITE
     function launchSite(url){
