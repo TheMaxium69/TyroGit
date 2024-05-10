@@ -76,6 +76,9 @@ ipcMain.on("manualClose", () => {
 ipcMain.on("reposChoose", () => {
     mainWindow.loadFile('page/repos.html');
 });
+ipcMain.on("panelChoose", () => {
+    mainWindow.loadFile('page/panel.html');
+});
 ipcMain.on("branchChoose", () => {
     mainWindow.loadFile('page/branch.html');
 });
@@ -85,6 +88,36 @@ ipcMain.on("branchChoose", () => {
 /***************
  * CONNEXION REPOS
  **************/
+ipcMain.on('select-save-dirs', async (event, data) => {
+
+    let filePath = data.url;
+
+    if (filePath) {
+            if (fs.existsSync(filePath)) {
+                console.log('Le repertoire existe:', filePath);
+                if (fs.existsSync(filePath + "/.git/")) {
+                    console.log('Git existe:', filePath + "/.git/");
+                    mainWindow.loadFile('page/panel.html');
+
+                    getNameRepos(filePath, event);
+                    getBranchRepos(filePath, event);
+                    getDiffRepos(filePath, event);
+
+                } else {
+                    console.log('Git existe pas:', filePath);
+                    event.reply('notif', { type: 'err', message: 'Le répertoire n\'est plus un repository Git.' });
+                }
+            } else {
+                console.log('Le repertoire n\'existe plus:', filePath);
+                event.reply('notif', { type: 'err', message: 'Le répertoire n\'existe plus.' });
+            }
+    } else {
+        console.log('Aucun repertoire selectionne ou selection annulee');
+        event.reply('notif', { type: 'err', message: 'Aucun répertoire sélectionné ou sélection annulée.' });
+    }
+
+})
+
 ipcMain.on('select-dirs', async (event, arg) => {
     const result = await dialog.showOpenDialog(mainWindow, {
         properties: ['openDirectory']
@@ -470,7 +503,66 @@ function getSaveRepo(event){
         getBranchRepos(data.url, event);
         getDiffRepos(data.url, event);
 
-        event.reply('repos-set-info', { reposName: data.name, url: data.url });
+        event.reply('repos-set-info', { reposName: data.name, reposUrl: data.url });
 
     });
+}
+
+ipcMain.on('get-repo-page', async (event, arg) => {
+
+    getSelectedRepoPage(event);
+
+});
+
+ipcMain.on('get-repo-page-saveFile', async (event, arg) => {
+
+    getSaveRepoPage(event);
+
+});
+
+function getSaveRepoPage(event){
+
+    let saveRepo = urlInstanceTyroGit + "Save_Repo.json";
+
+    const getSaveRepoPromise = new Promise((resolve, reject) => {
+        fs.readFile(saveRepo, 'utf8', (err, data) => {
+            if (err) {
+                reject(new Error("ERREUR AVEC LE FICHIER"))
+                return;
+            }
+            if (data){
+                resolve(JSON.parse(data));
+            } else {
+                resolve(null)
+            }
+        });
+    });
+
+    getSaveRepoPromise.then((data) => {
+
+        event.reply('get-repos-save', { saveFile: data });
+
+    });
+
+}
+function getSelectedRepoPage(event){
+
+    let selectedRepo = urlInstanceTyroGit + "Selected_Repo.json";
+
+    const getSelectedRepoPromise = new Promise((resolve, reject) => {
+        fs.readFile(selectedRepo, 'utf8', (err, data) => {
+            if (err) {
+                reject(new Error("ERREUR AVEC LE FICHIER"))
+                return;
+            }
+            resolve(JSON.parse(data));
+        });
+    });
+
+    getSelectedRepoPromise.then((data) => {
+
+        event.reply('get-repos-selected', { reposName: data.name, reposUrl: data.url });
+
+    });
+
 }
