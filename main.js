@@ -162,6 +162,7 @@ function getNameRepos(gitRepoPath, event){
 
     git.listRemote(['--get-url'], (err, remote) => {
         if (err) {
+            event.reply('notif', { type: 'err', message: 'Git est mal configurer.' });
             console.error('Erreur lors de la récupération des informations sur le repository:', err);
             return;
         }
@@ -331,6 +332,24 @@ ipcMain.on('git-commit', async (event, data) => {
             getSaveRepo(event);
             event.reply('notif', { type: 'err', message: 'Erreur lors du commit' });
         });
+
+});
+ipcMain.on('git-checkout', async (event, data) => {
+
+    const git = simpleGit(data.url);
+
+    // Exécution de la commande git checkout
+    git.checkout(data.branch, (err, result) => {
+        if (err) {
+            event.reply('notif', { type: 'err', message: 'Erreur lors du changement de branch' });
+            console.error('Erreur lors du checkout :', err);
+            return;
+        }
+
+        console.log('Checkout effectué avec succès !');
+        mainWindow.loadFile('page/panel.html');
+        
+    });
 
 });
 
@@ -577,3 +596,24 @@ function getSelectedRepoPage(event){
     });
 
 }
+
+ipcMain.on('get-branch-page', async (event, data) => {
+
+    const git = simpleGit(data.url);
+
+    git.branch((err, branches) => {
+        if (err) {
+            console.error('Erreur lors de la récupération des branches:', err);
+            return;
+        }
+        const currentBranch = branches.current;
+        const allBranch = branches.all;
+
+        // console.log('Liste de toutes les branches:', allBranch);
+        console.log('Branche actuelle :', currentBranch);
+        event.reply('transfere-branch', { reposBranchSelected: currentBranch, reposBranchAll: allBranch });
+
+    });
+
+
+});

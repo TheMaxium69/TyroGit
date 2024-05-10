@@ -13,56 +13,182 @@
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.4.2/css/all.css">
 
     <link rel="stylesheet" href="../module/all.css">
-    <link rel="stylesheet" href="../module/start.css">
+    <link rel="stylesheet" href="../module/branch.css">
 
 </head>
 
 <body id="start">
+
+
+<div style="width: 100%; height: 100%; position: relative; background: #02004D">
 
     <nav style="-webkit-app-region: drag">
         <img src="../assets/logo.png" width="20px" style="margin-left: 10px">
         <p id="title">TyroGit</p>
         <div class="nav-buttons">
             <button id="minimize"><i class="fa-light fa-window-minimize"></i></button>
-<!--            <button id="maximize"><i class="fa-light fa-square"></i></button>-->
+            <!--            <button id="maximize"><i class="fa-light fa-square"></i></button>-->
             <button id="close"><i class="fa-light fa-xmark"></i></button>
         </div>
     </nav>
 
-    <div style="width: 100%; height: 100%; position: relative; background: #02004D">
-        <div style="width: 336px; height: 40px; left: 13px; top: 480px; position: absolute">
-            <div style="width: 336px; height: 40px; left: 0px; top: 0px; position: absolute; background: #05027E; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border-radius: 8px"></div>
-            <div style="left: 116px; top: 11px; position: absolute; color: white; font-size: 12px; font-family: Poppins; font-weight: 700; word-wrap: break-word">ADD FIRST REPOS</div>
-            <input type="file" id="dirs" style="opacity: 0;width: 336px; height: 40px; left: 0px; top: 0px; position: absolute; background: transparent; border: 1px solid red; border-radius: 8px">
-        </div>
-        <div style="width: 319px; height: 177px; left: 21px; top: 230px; position: absolute">
-            <div style="width: 319px; height: 177px; left: 0px; top: 0px; position: absolute; background: #010032; border-radius: 8px"></div>
-            <div style="left: 120px; top: 119px; position: absolute; color: white; font-size: 18px; font-family: Poppins; font-weight: 700; word-wrap: break-word">TYROGIT</div>
-            <div style="left: 132px; top: 143px; position: absolute; color: white; font-size: 12px; font-family: Poppins; font-weight: 400; word-wrap: break-word">Client Git</div>
-            <img style="width: 81px; height: 72px; left: 119px; top: 36px; position: absolute" src="../assets/logo.png" />
+    <div style="width: 345px; height: 59px; left: 6px; top: 46px; position: absolute">
+        <div style="width: 345px; height: 59px; left: 0px; top: 0px; position: absolute; background: #010032; border-radius: 8px"></div>
+        <div onclick="commeBackPage()" style="width: 345px; height: 59px; left: 0px; top: 0px; position: absolute; border-radius: 8px"></div>
+        <div onclick="commeBackPage()" style="left: 16px; top: 5px; position: absolute; color: white; font-size: 12px; font-family: Inter; font-weight: 400; word-wrap: break-word">REPOSITORY</div>
+        <div onclick="commeBackPage()" id="reposName" style="left: 43px; top: 28px; position: absolute; color: white; font-size: 17px; font-family: Inter; font-weight: 400; word-wrap: break-word"></div>
+        <div onclick="commeBackPage()" style="width: 24px; height: 24px; left: 302px; top: 28px; position: absolute">
+            <i style="font-size: 25px;" class="ri-arrow-up-s-line"></i>
         </div>
     </div>
 
+    <div style="width: 319px; height: 674px; left: 21px; top: 116px; position: absolute; background: #010032; border-radius: 8px"></div>
+    <div style="width: 319px; height: 674px; left: 21px; top: 116px; position: absolute">
+
+        <div style="margin: 9px 16px;position:absolute;color: white; font-size: 13px; font-family: Inter; font-weight: 400; word-wrap: break-word">Branch</div>
+        <article style="height: 36px; z-index: 1;"></article>
 
 
-    <script>
-        const { ipcRenderer } = require("electron");
-        const ipc=ipcRenderer;
+        <section id="branchAll" class="custom-scrollbar">
+            <!--ADD REPOS-->
+        </section>
 
-        document.getElementById('dirs').addEventListener('click', (evt) => {
-            evt.preventDefault()
-            window.postMessage({
-                type: 'select-dirs',
-            })
+
+    </div>
+
+</div>
+
+<div style="width: 336px; height: 40px; left: 11px; top: 800px; position: absolute">
+    <div style="width: 336px; height: 40px; left: 0px; top: 0px; position: absolute; background: #05027E; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border-radius: 8px"></div>
+    <div style="left: 127px; top: 11px; position: absolute; color: white; font-size: 12px; font-family: Poppins; font-weight: 700; word-wrap: break-word">ADD BRANCH</div>
+    <input type="file" id="dirs" style="opacity: 0;width: 336px; height: 40px; left: 0px; top: 0px; position: absolute; background: #05027E; box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); border-radius: 8px"></div>
+</div>
+
+</div>
+
+<script>
+    const { ipcRenderer } = require("electron");
+    const ipc=ipcRenderer;
+
+
+    /* BALISE INFO */
+    let reposNameDiv = document.getElementById("reposName");
+    let branchAllDiv = document.getElementById("branchAll");
+
+    /* INFO DU REPOS */
+    let reposUrl;
+    let reposName;
+    let branchCurrent;
+    let branchAll;
+
+    let nbBranch = 0;
+
+    /* GET BRANCH */
+    ipcRenderer.on("transfere-branch", (event, data) => {
+        branchCurrent = data.reposBranchSelected;
+        branchAll = data.reposBranchAll;
+
+        // console.log(branchCurrent, branchAll);
+
+        if (branchAll.length !== 0){
+            branchAll.forEach(oneBranch => {
+                if (oneBranch === branchCurrent){
+                    const newDiv = document.createElement('div');
+                    newDiv.style.width = '100%';
+                    nbRepoSave = 1;
+                    newDiv.innerHTML = newBranch('true',oneBranch);
+                    branchAllDiv.appendChild(newDiv);
+                }
+            });
+            branchAll.forEach(oneBranch => {
+                if (oneBranch !== branchCurrent){
+                    const newDiv = document.createElement('div');
+                    newDiv.style.width = '100%';
+                    nbRepoSave = nbRepoSave + 1;
+                    newDiv.innerHTML = newBranch('false',oneBranch);
+                    branchAllDiv.appendChild(newDiv);
+                }
+            });
+        }
+    });
+
+    /* GET REPO SELECTED */
+    ipcRenderer.on("get-repos-selected", (event, data) => {
+
+        reposName = data.reposName;
+        reposUrl = data.reposUrl;
+
+        reposNameDiv.innerText = reposName;
+
+        ipc.send("get-branch-page", {url:reposUrl});
+
+    });
+
+    getFileRepo();
+    function getFileRepo(){
+        ipc.send("get-repo-page");
+    }
+
+    /* GENERATE REPO SAVE */
+    function newBranch(isFirst, branchName){
+
+        let bar = ` <div style="margin:10px auto;width: 276px; height: 0px; border: 1px rgba(255, 255, 255, 0.36) solid"></div>`
+        let iconeClass = "ri-git-branch-line";
+        let name = branchName
+
+
+        if (isFirst === "true"){
+            bar = "";
+            iconeClass = "ri-checkbox-circle-fill";
+        }
+
+        let NewDiv
+
+        NewDiv = `
+    ${bar}
+    <div onclick="selectNewBranch('${name}')" style="width: 100%;">
+        <div style="display: flex;flex-wrap: nowrap;justify-content: flex-start;padding: 0px 37px;gap: 20px;">
+            <div style="width: 24px; height: 24px;">
+                <i style="width: 14px; height: 14px; color: white" class="${iconeClass}"></i>
+            </div>
+            <div style="color: white; font-size: 12px; font-family: Inter; font-weight: 600; word-wrap: break-word; margin-top: 5px;white-space: nowrap;">${name}</div>
+        </div>
+    </div>
+`;
+
+        return NewDiv;
+
+    }
+
+    /* DEPLACEMENT */
+
+    function commeBackPage(){
+        ipc.send("panelChoose");
+    }
+
+    function selectNewBranch(branch){
+        console.log(branch)
+        ipc.send("git-checkout", { branch:branch, url:reposUrl })
+    }
+
+
+
+    /* ADD REPO */
+    document.getElementById('dirs').addEventListener('click', (evt) => {
+        evt.preventDefault()
+        window.postMessage({
+            type: 'select-dirs',
         })
+    })
 
-        ipcRenderer.on("notif", (event, info) => {
-            notif(info.type, info.message);
-        });
-    </script>
+    /* NOTIF */
+    ipcRenderer.on("notif", (event, info) => {
+        notif(info.type, info.message);
+    });
+</script>
 
-    <script src="../module/izitoast.js"></script>
-    <script src="../module/navbar.js"></script>
+<script src="../module/izitoast.js"></script>
+<script src="../module/navbar.js"></script>
 
 </body>
 </html>

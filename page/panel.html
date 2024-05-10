@@ -321,7 +321,11 @@
     }
 
     function branchChoose(){
-        ipc.send("branchChoose");
+        if (nbCommitNotPush > 0 || nbFile > 0){
+            notif("err", "Vous ne pouvez pas changer de branch")
+        } else {
+            ipc.send("branchChoose");
+        }
     }
 
     function newFile(isFirst, type, name, id){
