@@ -396,6 +396,19 @@ function initFile(){
         console.log('Le fichier Save_Repo.json existe deja.');
     }
 
+    let settingDefault = { color:'#02004d', isIcone:true };
+
+    let settingsFile = urlInstanceTyroGit + "Settings.json";
+    if (!fs.existsSync(settingsFile)) {
+        fs.appendFile(settingsFile, JSON.stringify(settingDefault), function (err) {
+            if (err)
+                throw err;
+            console.log('Fichier Settings.json cree !');
+        });
+    } else {
+        console.log('Le fichier Settings.json existe deja.');
+    }
+
 
 }
 
