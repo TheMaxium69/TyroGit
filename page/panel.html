@@ -152,6 +152,8 @@
         }
     }, 300);
 
+    setInterval(getFileRepo, 300);
+
     ipcRenderer.on("repos-set-info", (event, data) => {
 
         isAdd = "true";
