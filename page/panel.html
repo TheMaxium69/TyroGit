@@ -94,8 +94,12 @@
 
             <!--REPO-->
             <div onclick="reposChoose()" style="width: 100%; height: 72px; z-index: 9999;">
+                <div style="width: 24px; height: 24px; left: 40px; top: 30px; position: absolute">
+                    <i id="repoIcone" class="ri-git-repository-line" style="font-size: 18px;display: block" ></i>
+                    <img id="repoImg" src="" width="18" height="18" style="margin-top: 0px;display: none">
+                </div>
                 <div style="left: 16px; top: 5px; position: absolute; color: white; font-size: 12px; font-family: Inter; font-weight: 400; word-wrap: break-word">REPOSITORY</div>
-                <div id="reposName" style="left: 43px; top: 28px; position: absolute; color: white; font-size: 17px; font-family: Inter; font-weight: 400; word-wrap: break-word"></div>
+                <div id="reposName" style="left: 64px;top: 29px; position: absolute; color: white; font-size: 17px; font-family: Inter; font-weight: 400; word-wrap: break-word"></div>
                 <div style="width: 315.01px; height: 0px; left: 14px; top: 65px; position: absolute; border: 1px white solid"></div>
                 <div style="width: 24px; height: 24px; left: 302px; top: 28px; position: absolute">
                     <i style="font-size: 25px;" class="ri-arrow-down-s-line"></i>
@@ -103,8 +107,12 @@
             </div>
             <!--BRANCH-->
             <div onclick="branchChoose()" style="margin-top: 4px; width: 100%; height: 72px; z-index: 9999;">
+                <div style="width: 24px; height: 24px; left: 41px; top: 106px; position: absolute">
+                    <i id="branchIcone" class="ri-git-branch-line" style="font-size: 18px;display: block" ></i>
+                    <img id="branchImg" src="" width="18" height="18" style="margin-top: 2px;display: none">
+                </div>
                 <div style="left: 18px; top: 83px; position: absolute; color: white; font-size: 12px; font-family: Inter; font-weight: 400; word-wrap: break-word">BRANCH</div>
-                <div id="reposBranchSelected" style="left: 45px; top: 106px; position: absolute; color: white; font-size: 17px; font-family: Inter; font-weight: 400; word-wrap: break-word"></div>
+                <div id="reposBranchSelected" style="left: 65px; top: 106px; position: absolute; color: white; font-size: 17px; font-family: Inter; font-weight: 400; word-wrap: break-word"></div>
                 <div style="width: 315.01px; height: 0px; left: 16px; top: 143px; position: absolute; border: 1px white solid"></div>
                 <div style="width: 24px; height: 24px; left: 304px; top: 106px; position: absolute">
                     <i style="font-size: 25px;" class="ri-arrow-down-s-line"></i>
@@ -126,7 +134,10 @@
     let countCommitDiv = document.getElementById("countCommitDiv");
     let countCommitChiffre = document.getElementById("countCommitChiffre");
     let titleCommit = document.getElementById("titleCommit");
-    let descriptionCommit = document.getElementById("descriptionCommit");
+    let repoIconeDiv = document.getElementById("repoIcone");
+    let repoImgDiv = document.getElementById("repoImg");
+    let branchIconeDiv = document.getElementById("branchIcone");
+    let branchImgDiv = document.getElementById("branchImg");
 
     /* INFO DU REPOS */
     let reposUrl;
@@ -466,7 +477,33 @@
     ipcRenderer.on("get-variable-settings", (event, data) => {
         const root = document.documentElement;
         root.style.setProperty('--main-color', data.color);
+
+        if (data.isIcone){
+
+            setTimeout(function() {
+
+                let imgRepo = reposUrl + "/.tyrogit/repo.png"
+                let imgBranch = reposUrl + "/.tyrogit/branch/" + reposBranchSelected + ".png"
+
+                if (fs.existsSync(imgRepo)) {
+                    repoImgDiv.src = imgRepo
+                    repoIconeDiv.style.display = "none";
+                    repoImgDiv.style.display = "block";
+                }
+
+                if (fs.existsSync(imgBranch)) {
+                    branchImgDiv.src = imgBranch
+                    branchIconeDiv.style.display = "none";
+                    branchImgDiv.style.display = "block";
+                }
+
+            }, 800);
+
+        }
+
     });
+
+
 
 </script>
 
